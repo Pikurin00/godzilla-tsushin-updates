@@ -1,10 +1,22 @@
 {
-  "version": "1.4.1",
-  "title": "テスト更新",
+  "version": "1.4.2",
+  "title": "表示をすっきり",
   "files": [
     {
+      "path": "app/app.js",
+      "sha256": "0ef4bbe3c89132fa03f20b19911f419e6cc8c055792c86a2568038f317479499"
+    },
+    {
       "path": "app/data.js",
-      "sha256": "ae19e00044a105ef670322ab7a7d020c4b0793a73fff0fb559a5a259f996d57e"
+      "sha256": "d0a55daaf93bcdd1f18bbc040a2680bbc1096d66e5a2f466de9daae62168351b"
+    },
+    {
+      "path": "app/index.html",
+      "sha256": "cbe557ba207f9dd2400807432bf51a3777a785a03f8e3cca8777b77455ca7ae7"
+    },
+    {
+      "path": "app/style.css",
+      "sha256": "b945c607bd5adde6fea0bde6a1cbc536a87c2ff3d8df0ac0d05a60190cfefa64"
     }
   ],
   "minBase": "1.4.0"

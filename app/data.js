@@ -85,7 +85,6 @@ window.TRIVIA = [
 
 // カウントダウン：date=その日 / until=いつまで続くか / today・ongoing=当日・期間中に出す言葉
 window.EVENTS = [
-  { label: '遠隔アップデート テスト', sub: 'v1.4.1 が反映されました', date: '2026-10-01', until: '2026-12-31', today: '成功！', ongoing: '成功！' },
   { label: '『ゴジラ-0.0』日本公開', sub: '2026年11月3日', date: '2026-11-03', until: '2026-12-31', today: '本日公開！', ongoing: '公開中' },
   { label: '『ゴジラ・フェス 2026』', sub: 'TAKANAWA GATEWAY CITY・入場無料', date: '2026-11-03', until: '2026-11-03', today: '本日開催！', ongoing: '本日開催！' },
   { label: '『ゴジラ-0.0』北米公開', sub: '2026年11月6日', date: '2026-11-06', until: '2026-12-31', today: '本日公開！', ongoing: '公開中' },
