@@ -1,6 +1,6 @@
 'use strict';
-var APP_VER = '1.4.2';
-var KEY_N = 'gj_win_news_v1', KEY_S = 'gj_win_sources_v1', KEY_L = 'gj_login_v1', KEY_C = 'gj_win_settings_v1', MAX = 100;
+var APP_VER = '1.5.0';
+var KEY_N = 'gj_win_news_v1', KEY_S = 'gj_win_sources_v1', KEY_L = 'gj_login_v1', KEY_C = 'gj_win_settings_v1';
 function ld(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
 function sv(k, v) {
   var j = JSON.stringify(v);
@@ -67,8 +67,9 @@ function tidyStored() {   // 保存済みの記事を整理：関係ない記事
 }
 
 /* ---------- 設定 ---------- */
-var cfg = Object.assign({ theme: 'auto', interval: 30, notify: true, removedSrc: [], updateUrl: '', autoUpdate: true }, ld(KEY_C, {}) || {});
+var cfg = Object.assign({ theme: 'auto', interval: 30, notify: true, removedSrc: [], updateUrl: '', autoUpdate: true, maxItems: 100, titleScreen: true }, ld(KEY_C, {}) || {});
 function saveCfg() { sv(KEY_C, cfg); }
+function maxN() { var n = +cfg.maxItems; return n >= 20 && n <= 5000 ? n : 100; }
 function applyTheme() {
   var r = document.documentElement;
   if (cfg.theme === 'light' || cfg.theme === 'dark') r.setAttribute('data-theme', cfg.theme); else r.removeAttribute('data-theme');
@@ -94,7 +95,7 @@ function save() { sv(KEY_N, st); }
 function trim() {
   st.items.sort(function (a, b) { return b.ts - a.ts; });
   var keep = 0;   // 古いものから自動削除。ただしブックマーク済みは削除しない（100件の枠にも数えない）
-  st.items = st.items.filter(function (n) { if (n.bm) return true; keep++; return keep <= MAX; });
+  st.items = st.items.filter(function (n) { if (n.bm) return true; keep++; return keep <= maxN(); });
 }
 
 /* ---------- カウントダウン ---------- */
@@ -139,7 +140,7 @@ function renderNews() {
     if (c === cur) b.className = 'on'; b.onclick = function () { cur = c; renderNews(); }; ch.appendChild(b);
   });
   var arr = st.items.filter(function (n) { return inCat(n) && matchQ(n); });
-  $('count').textContent = (q || cur !== 'すべて' ? arr.length : st.items.length) + ' 件';
+  $('count').textContent = (q || cur !== 'すべて' ? arr.length + ' 件' : (st.items.length - bmCount()) + ' / ' + maxN() + ' 件');
   $('list').innerHTML = arr.map(function (n) {
     return '<article class="item' + (n.unread ? ' unread' : '') + '" data-id="' + esc(n.id) + '">' +
       (n.image ? '<img src="' + esc(n.image) + '" alt="" referrerpolicy="no-referrer">' : '') +
@@ -311,6 +312,10 @@ var L = ld(KEY_L, { streak: 0, last: '', done: 0, best: 0 }) || {};
 L = Object.assign({ streak: 0, last: '', done: 0, best: 0 }, L);
 if (typeof L.total !== 'number') L.total = Math.max(L.best || 0, L.streak || 0, L.last ? 1 : 0);
 if (!Array.isArray(L.days)) L.days = L.last ? [L.last] : [];
+if (typeof L.gp !== 'number') L.gp = 0;
+if (typeof L.gpTotal !== 'number') L.gpTotal = 0;
+if (!Array.isArray(L.gpLog)) L.gpLog = [];
+if (!Array.isArray(L.owned)) L.owned = [];
 function checkBreak() { if (L.last && dayDiff(L.last, today()) > 1 && L.streak !== 0) { L.streak = 0; sv(KEY_L, L); } }
 
 function loginDays() {   // 記録のある日（v1.3より前の連続分も、連続ログイン日数から復元する）
@@ -345,12 +350,16 @@ function triviaToday() {
 function renderBonus() {
   var got = L.last === today(), el = $('bonus'), Z = window.ZUKAN || [];
   if (!got) { el.innerHTML = '<div class="note">スタンプで豆知識と図鑑が開きます。</div>'; return; }
-  var h = '<div class="bx"><div class="bh">今日の豆知識</div><div class="bt">' + esc(triviaToday()) + '</div></div>';
+  var h = (L.gpDay === today() ? '<div class="gpx"><div class="bh">Godzilla Point</div><b>+' + L.gpGain + ' GP</b></div>' : '') + '<div class="bx"><div class="bh">今日の豆知識</div><div class="bt">' + esc(triviaToday()) + '</div></div>';
   if (L.total >= 1 && L.total <= Z.length) { var z = Z[L.total - 1]; h += '<div class="bx"><div class="bh">図鑑に追加</div><div class="bt"><b>' + esc(z[0]) + '</b>　' + esc(z[1]) + '（' + z[2] + '年）</div></div>'; }
   else if (L.total > Z.length) h += '<div class="bx"><div class="bh">図鑑</div><div class="bt">図鑑コンプリート！</div></div>';
   el.innerHTML = h;
 }
 
+function renderGpLog() {
+  var h = L.gpLog.slice(-14).reverse().map(function (g) { return '<div class="glog"><span>' + esc(g.d.replace(/-/g, '.')) + '</span><b>+' + g.n + ' GP</b></div>'; }).join('');
+  $('gplog').innerHTML = (h || '<div class="note">まだありません</div>') + '<div class="note" style="margin-top:6px">これまでの合計 ' + L.gpTotal + ' GP</div>';
+}
 function renderLogin() {
   checkBreak();
   var n = L.streak % 7, full = L.streak > 0 && n === 0 ? 7 : n;
@@ -359,14 +368,21 @@ function renderLogin() {
   s += '<div class="st" style="border:0"></div>'; $('stamps').innerHTML = s;
   var got = L.last === today(), b = $('go');
   b.disabled = got; b.style.opacity = got ? .5 : 1; b.textContent = got ? '今日はもう押しました' : '今日のスタンプを押す';
-  renderTitles(); renderBonus(); renderCal();
+  $('gp').textContent = L.gp;
+  renderGpLog(); renderTitles(); renderBonus(); renderCal();
   $('msg').textContent = got ? '明日もまた来てね。' : (L.streak === 0 ? '今日が1日目。ここから始めよう。' : 'あと一歩。今日押して連続記録を伸ばそう。');
+}
+function rollGP() {   // 1〜100 のどれか（同じ確率）
+  var a = new Uint32Array(1);
+  try { crypto.getRandomValues(a); } catch (e) { a[0] = Math.floor(Math.random() * 4294967296); }
+  return a[0] % 100 + 1;
 }
 $('go').onclick = function () {
   checkBreak(); if (L.last === today()) return;
   L.streak += 1; L.last = today(); if (L.streak > L.best) L.best = L.streak;
   if (L.streak % 7 === 0) L.done += 1;
   L.total += 1; L.days.push(L.last); L.days = L.days.slice(-400);
+  var gain = rollGP(); L.gp += gain; L.gpTotal += gain; L.gpDay = L.last; L.gpGain = gain; L.gpLog.push({ d: L.last, n: gain }); L.gpLog = L.gpLog.slice(-60);
   sv(KEY_L, L); renderLogin();
   if (L.streak % 7 === 0) $('msg').textContent = 'カード満願！称号「' + titleOf(L.done) + '」を獲得しました。';
 };
@@ -383,6 +399,45 @@ function renderZukan() {
   });
   $('zgrid').innerHTML = h;
 }
+
+/* ---------- 期間限定図鑑（Godzilla Point で解放） ---------- */
+function ownedLim(id) { return L.owned.indexOf(id) > -1; }
+function renderLimited() {
+  var t = today(), G = window.LIM_GROUPS || [], I = window.LIMITED || [], h = '', act = 0;
+  $('gp2').textContent = L.gp;
+  G.forEach(function (g) {
+    var items = I.filter(function (e) { return e[1] === g.id; });
+    var st_ = t < g.from ? 0 : (t > g.until ? 2 : 1), mine = items.filter(function (e) { return ownedLim(e[0]); });
+    if (st_ === 2 && !mine.length) return;
+    if (st_ === 1) act++;
+    var label = st_ === 1 ? '残り ' + (dayDiff(t, g.until) + 1) + ' 日' : (st_ === 0 ? g.from.slice(5).replace('-', '/') + ' から' : '終了');
+    h += '<div class="lg"><span>' + esc(g.title) + '</span><small>' + label + '（' + mine.length + ' / ' + items.length + '）</small></div><div class="zgrid">';
+    items.forEach(function (e) {
+      if (ownedLim(e[0])) h += '<div class="zc lim"><span class="newb zb">限定</span><div class="zn">' + esc(g.title) + '</div><div class="zt">' + esc(e[2]) + '</div><div class="zs">' + esc(e[3]) + '（' + e[4] + '）</div><div class="zd">' + esc(e[5]) + '</div></div>';
+      else if (st_ === 1) h += '<div class="zc lock"><div class="zn">限定</div><div class="zt">' + esc(e[2]) + '</div><div class="zd">？？？</div><button class="btn buy" data-lim="' + esc(e[0]) + '"' + (L.gp < e[6] ? ' disabled' : '') + '>' + (L.gp < e[6] ? 'あと ' + (e[6] - L.gp) + ' GP' : e[6] + ' GP で解放') + '</button></div>';
+      else if (st_ === 0) h += '<div class="zc lock"><div class="zn">限定</div><div class="zt">？？？</div><div class="zd">' + g.from.slice(5).replace('-', '/') + ' から</div></div>';
+    });
+    h += '</div>';
+  });
+  $('zlh').textContent = act ? '開催中の期間限定図鑑があります。解放したものは、期間が終わっても残ります。' : '開催中の期間限定図鑑はありません。';
+  $('zlim').innerHTML = h || '<div class="empty">いまはありません</div>';
+  [].forEach.call(document.querySelectorAll('#zlim .buy'), function (b) { b.onclick = function () { buyLim(b.dataset.lim); }; });
+}
+function buyLim(id) {
+  var e = (window.LIMITED || []).filter(function (x) { return x[0] === id; })[0]; if (!e || ownedLim(id)) return;
+  var g = (window.LIM_GROUPS || []).filter(function (x) { return x.id === e[1]; })[0], t = today();
+  if (!g || t < g.from || t > g.until) { renderLimited(); return; }
+  if (L.gp < e[6]) return;
+  if (!confirm('「' + e[2] + '」を ' + e[6] + ' GP で解放しますか？')) return;
+  L.gp -= e[6]; L.owned.push(id); sv(KEY_L, L); renderLimited(); renderLogin();
+}
+var zTab = 'a';
+function zukanTab(k) {
+  zTab = k; $('zpa').className = k === 'a' ? '' : 'hide'; $('zpb').className = k === 'b' ? '' : 'hide';
+  $('zt_a').className = k === 'a' ? 'on' : ''; $('zt_b').className = k === 'b' ? 'on' : '';
+  if (k === 'b') renderLimited(); else renderZukan();
+}
+$('zt_a').onclick = function () { zukanTab('a'); }; $('zt_b').onclick = function () { zukanTab('b'); };
 
 /* ---------- データの引継ぎ ---------- */
 var KEYS = [KEY_N, KEY_S, KEY_L, KEY_C];
@@ -445,7 +500,7 @@ async function checkUpdate(auto) {
     if (auto && confirm('新しいバージョン v' + r.version + '（' + r.title + '）をダウンロードしました。\n今すぐ反映しますか？（保存データはそのまま残ります）')) applyUpdate();
   }
 }
-async function applyUpdate() { msgU('反映しています…'); try { await window.gj.reloadApp(); } catch (e) { msgU('反映できませんでした。アプリを閉じて開き直してください。', true); } }
+async function applyUpdate() { try { sessionStorage.setItem('gj_notitle', '1'); } catch (e) { } msgU('反映しています…'); try { await window.gj.reloadApp(); } catch (e) { msgU('反映できませんでした。アプリを閉じて開き直してください。', true); } }
 
 /* ---------- 設定 ---------- */
 function initSettings() {
@@ -453,6 +508,13 @@ function initSettings() {
   $('s_theme').onchange = function () { cfg.theme = this.value; saveCfg(); applyTheme(); };
   $('s_int').onchange = function () { cfg.interval = +this.value; saveCfg(); schedule(); };
   $('s_nt').onchange = function () { cfg.notify = this.checked; saveCfg(); };
+  $('s_max').value = String(maxN()); $('s_title').checked = cfg.titleScreen !== false;
+  $('s_title').onchange = function () { cfg.titleScreen = this.checked; saveCfg(); };
+  $('s_max').onchange = function () {
+    var v = +this.value, over = st.items.filter(function (n) { return !n.bm; }).length - v;
+    if (over > 0 && !confirm('保存件数を ' + v + ' 件にすると、古いニュース ' + over + ' 件が消えます。よろしいですか？')) { this.value = String(maxN()); return; }
+    cfg.maxItems = v; saveCfg(); trim(); save(); renderNews();
+  };
   $('u_url').value = cfg.updateUrl || ''; $('u_auto').checked = cfg.autoUpdate !== false;
   $('u_url').onchange = function () { cfg.updateUrl = this.value.trim(); saveCfg(); };
   $('u_auto').onchange = function () { cfg.autoUpdate = this.checked; saveCfg(); };
@@ -472,9 +534,26 @@ async function loadInfo() {
 var SECS = ['news', 'login', 'zk', 'src', 'set'];
 function tab(n) {
   SECS.forEach(function (id, i) { $(id).className = (i + 1 === n) ? '' : 'hide'; $('t' + (i + 1)).className = (i + 1 === n) ? 'on' : ''; });
-  if (n === 2) renderLogin(); if (n === 3) renderZukan(); if (n === 4) renderSources(); if (n === 5) loadInfo();
+  if (n === 2) renderLogin(); if (n === 3) zukanTab(zTab); if (n === 4) renderSources(); if (n === 5) loadInfo();
 }
 [1, 2, 3, 4, 5].forEach(function (n) { $('t' + n).onclick = function () { tab(n); }; });
+
+/* ---------- タイトル画面 ---------- */
+function showTitle() {
+  var got = L.last === today(), t = today();
+  checkBreak();
+  $('ts_stats').innerHTML = '<div>連続ログイン<b>' + L.streak + '</b></div><div>Godzilla Point<b>' + L.gp + '</b></div><div>未読<b>' + unreadCount() + '</b></div>';
+  var next = null;
+  (window.EVENTS || []).forEach(function (e) { var d = dayDiff(t, e.date); if (d >= 0 && (next === null || d < next.d)) next = { d: d, e: e }; });
+  $('ts_cd').innerHTML = next ? esc(next.e.label) + '　' + (next.d === 0 ? '<b>' + esc(next.e.today) + '</b>' : 'あと <b>' + next.d + '</b> 日') : '';
+  $('ts_stamp').textContent = got ? '' : '今日のスタンプを押しに行く';
+  $('ts_ver').textContent = 'v' + APP_VER;
+  $('title').className = 'ttlscr';
+  try { $('ts_go').focus(); } catch (e) { }
+}
+function hideTitle(toStamp) { $('title').className = 'ttlscr hide'; if (toStamp) tab(2); }
+$('ts_go').onclick = function () { hideTitle(false); };
+$('ts_stamp').onclick = function () { hideTitle(true); };
 
 /* ---------- 起動 ---------- */
 (async function start() {
@@ -483,6 +562,8 @@ function tab(n) {
   var tidied = 0;
   if ((cfg.gate || 0) < 2) { tidied = tidyStored(); cfg.gate = 2; saveCfg(); save(); }
   initSettings(); schedule(); loadInfo();
+  var skipTitle = false; try { skipTitle = !!sessionStorage.getItem('gj_notitle'); sessionStorage.removeItem('gj_notitle'); } catch (e) { }
+  if (cfg.titleScreen !== false && !skipTitle) showTitle();
   renderCountdown(); renderNews(); renderLogin(); renderSources();
   if (st.last) $('status').textContent = '最終更新 ' + fmtTime(st.last);
   if (tidied) $('status').textContent = '記事を整理しました（' + tidied + ' 件）';
