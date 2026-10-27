@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https: http: data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GODZILLA 通信</title>
+<link rel="stylesheet" href="fonts/dela-gothic-one/400.css">
+<link rel="stylesheet" href="fonts/zen-kaku-gothic-new/400.css">
+<link rel="stylesheet" href="fonts/zen-kaku-gothic-new/700.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body><div id="title" class="ttlscr hide"><div class="ts-in">
+ <h1 class="ts-h">GODZILLA <span>通信</span></h1>
+ <div class="ts-sub">ゴジラの最新情報とスタンプカード</div>
+ <div class="ts-stats" id="ts_stats"></div>
+ <div class="ts-cd" id="ts_cd"></div>
+ <button class="btn ts-go" id="ts_go">はじめる</button>
+ <button class="lnk" id="ts_stamp"></button>
+ <div class="ts-ver" id="ts_ver"></div>
+</div></div>
+<div class="wrap">
+<header><h1>GODZILLA <span>通信</span></h1><div class="tag">ゴジラの最新情報とスタンプカード</div></header>
+<nav><button id="t1" class="on">ニュース</button><button id="t2">スタンプカード</button><button id="t3">図鑑</button><button id="t4">情報源</button><button id="t5">設定</button></nav>
+
+<section id="news">
+ <div id="cd" class="cd"></div>
+ <input id="q" type="search" class="srch" placeholder="キーワードで検索（見出し・本文）" autocomplete="off">
+ <div class="chips" id="chips"></div>
+ <div class="bar"><span id="status" class="note"></span><span id="count" class="note"></span></div>
+ <div class="bar"><span><button class="lnk" id="reload">今すぐ更新</button>　<button class="lnk" id="readall">すべて既読にする</button></span><span class="note hide" id="auto"></span></div>
+ <div id="list"></div>
+ <details><summary>ニュースを追加</summary>
+ <form id="f">
+  <input name="title" placeholder="見出し（例：特報映像が公開）" required maxlength="80">
+  <select name="cat"><option>映画</option><option>グッズ</option><option>イベント</option></select>
+  <input name="src" placeholder="情報元（例：公式サイト / ゴジラ・ストア）" maxlength="40">
+  <input name="url" type="url" placeholder="リンクURL（任意）">
+  <textarea name="body" rows="2" placeholder="ひとこと説明" maxlength="160"></textarea>
+  <label class="note">ピックアップ画像（任意）<input type="file" name="img" accept="image/*"></label>
+  <button class="btn" type="submit">追加</button>
+ </form>
+ </details>
+</section>
+
+<section id="login" class="hide">
+ <div class="card">
+  <h2>ログインスタンプカード</h2>
+  <div class="note">1日でも休むと、また1日目から。</div>
+  <div id="ttl" class="ttl"></div>
+  <div style="margin-top:10px">連続ログイン</div>
+  <div class="streak"><span id="sn">0</span><span style="font-size:18px"> 日</span></div>
+  <div class="gpb">Godzilla Point　<b id="gp">0</b> GP</div>
+  <div class="stamps" id="stamps"></div>
+  <div class="msg" id="msg"></div>
+  <button class="btn" id="go">今日のスタンプを押す</button>
+  <div id="bonus" class="bonus"></div>
+  <details><summary>ログインカレンダー</summary><div id="cal"></div></details>
+  <details><summary>ポイントの履歴</summary><div id="gplog"></div></details>
+  <details><summary>称号一覧（30種）</summary><div id="tlist"></div></details>
+  <div class="note" style="margin-top:10px">満願 <span id="done">0</span> 枚　／　最長 <span id="best">0</span> 日　／　累計 <span id="total">0</span> 日</div>
+ </div>
+</section>
+
+<section id="zk" class="hide">
+ <div class="chips" id="zt"><button id="zt_a" class="on">図鑑</button><button id="zt_b">期間限定</button></div>
+ <div id="zpa"><div class="note" id="zkn"></div><div id="zgrid" class="zgrid"></div></div>
+ <div id="zpb" class="hide"><div class="gpb">Godzilla Point　<b id="gp2">0</b> GP</div><div class="note" id="zlh"></div><div id="zlim"></div></div>
+</section>
+
+<section id="src" class="hide">
+ <p class="note">登録したサイトから、ゴジラ関連の記事だけを取り込みます。</p>
+ <form id="sf">
+  <input name="url" type="url" placeholder="サイトまたはYouTubeチャンネルのURL" required>
+  <input name="name" placeholder="表示名（例：東宝MOVIE）" maxlength="30">
+  <label class="note"><input type="checkbox" name="only" style="width:auto"> ゴジラ専用（絞り込まない）</label>
+  <button class="btn" type="submit">自動検出して追加</button>
+ </form>
+ <div id="smsg" class="note" style="margin:8px 0"></div>
+ <div id="slist"></div>
+ <p><button class="lnk" id="sreset">初期の情報源に戻す</button></p>
+</section>
+
+<section id="set" class="hide">
+ <h2 class="sh">表示</h2>
+ <div class="row"><label><input type="checkbox" id="s_title"> 起動したときにタイトル画面を表示する</label></div>
+ <div class="row"><label for="s_theme">テーマ</label><select id="s_theme"><option value="auto">自動（Windowsの設定に合わせる）</option><option value="light">ライト</option><option value="dark">ダーク</option></select></div>
+ <h2 class="sh">ニュース</h2>
+ <div class="row"><label for="s_max">保存する件数</label><select id="s_max"><option value="50">50件</option><option value="100">100件</option><option value="200">200件</option><option value="300">300件</option><option value="500">500件</option><option value="1000">1000件</option></select></div>
+ <p class="note">超えると古いものから消えます（★ブックマークは除く）。</p>
+ <h2 class="sh">更新</h2>
+ <div class="row"><label for="s_int">自動更新の間隔</label><select id="s_int"><option value="15">15分ごと</option><option value="30">30分ごと</option><option value="60">1時間ごと</option><option value="180">3時間ごと</option><option value="0">自動更新しない</option></select></div>
+ <div class="row"><label><input type="checkbox" id="s_nt"> 自動更新で新着があったら通知する</label></div>
+ <h2 class="sh">アップデート（遠隔）</h2>
+ <p class="note">配信元のURLを入れると、新しい版を自動で確認します。</p>
+ <div class="row"><input id="u_url" type="url" placeholder="https://raw.githubusercontent.com/（ユーザー名）/（リポジトリ名）/main/" autocomplete="off"></div>
+ <div class="row"><label><input type="checkbox" id="u_auto"> 起動したときに自動で確認する</label></div>
+ <div class="row"><button class="btn" id="u_chk">今すぐ確認</button><button class="btn2 hide" id="u_apply">反映する（再読み込み）</button></div>
+ <div id="u_msg" class="note msgline"></div>
+ <h2 class="sh">データの引継ぎ・バックアップ</h2>
+ <p class="note">ニュース・スタンプなどを1つのファイルにまとめて保存します。</p>
+ <div class="row"><button class="btn" id="d_exp">データを書き出す</button><button class="btn2" id="d_imp">データを読み込む</button></div>
+ <div id="d_msg" class="note msgline"></div>
+ <p class="note">変更のたびに、次の場所へ自動で保存しています。</p>
+ <div class="note" id="d_bk"></div>
+ <p><button class="lnk" id="d_open">バックアップのフォルダを開く</button></p>
+ <h2 class="sh">このアプリについて</h2>
+ <div class="note" id="about"></div>
+</section>
+<div id="ver" class="note ver"></div>
+</div>
+<div id="md" class="md hide"><div class="sheet" id="sheet"></div></div>
+<script src="seed.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body></html>
