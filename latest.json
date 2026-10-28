@@ -1,22 +1,26 @@
 {
-  "version": "1.5.0",
-  "title": "タイトル画面・GP・期間限定図鑑",
+  "version": "1.5.1",
+  "title": "限定図鑑の整理・ハロウィン・フェス",
   "files": [
     {
       "path": "app/app.js",
-      "sha256": "d11a9d155835f6834c5c04a34285e30fd4a5ac3bb6f9b511a7776ad3a244106e"
+      "sha256": "14107b98697791bbab50730f4de7d61792d7f1b5aec4086771f9214343bbb888"
     },
     {
       "path": "app/data.js",
-      "sha256": "75fca0f754cd9d713ecee17c55da80c8bccd5d05643bd84520564064aeeb5abb"
+      "sha256": "41c2757b5ab35a6dd8f02ed0ad3b58b2215f22760eb4576be9a58aef0e5d85e4"
     },
     {
       "path": "app/index.html",
-      "sha256": "f9f3786b6c1757a3dd0f6395e355e5bd660aa76343edb5854bea3595ab2e50b9"
+      "sha256": "02be115d6fbe764408f64e7c99bd45e6e1d0e297f175f0741fde757d374aa270"
+    },
+    {
+      "path": "app/limited.js",
+      "sha256": "6db27576f4374f95d5c87f8d77cad0e3dc0a4f40d0032f387b97590ec2fdfb41"
     },
     {
       "path": "app/style.css",
-      "sha256": "aacbb4488dc2234cf5670603a1ee655d71a0e6a546781f031e83b90b3b34e3de"
+      "sha256": "160f0b4255fbf7296e3b0695335fb6c97ee0076d109e0d13e951a9f41d1ee88a"
     }
   ],
   "minBase": "1.4.0"
