@@ -86,6 +86,8 @@
  <h2 class="sh">ニュース</h2>
  <div class="row"><label for="s_max">保存する件数</label><select id="s_max"><option value="50">50件</option><option value="100">100件</option><option value="200">200件</option><option value="300">300件</option><option value="500">500件</option><option value="1000">1000件</option></select></div>
  <p class="note">超えると古いものから消えます（★ブックマークは除く）。</p>
+ <div class="row"><label for="s_block">除外するワード</label><input id="s_block" placeholder="スペース区切り（例：馬 ラーメン）" autocomplete="off"></div>
+ <div class="note" id="s_bmsg"></div>
  <h2 class="sh">更新</h2>
  <div class="row"><label for="s_int">自動更新の間隔</label><select id="s_int"><option value="15">15分ごと</option><option value="30">30分ごと</option><option value="60">1時間ごと</option><option value="180">3時間ごと</option><option value="0">自動更新しない</option></select></div>
  <div class="row"><label><input type="checkbox" id="s_nt"> 自動更新で新着があったら通知する</label></div>
@@ -111,5 +113,6 @@
 <script src="seed.js"></script>
 <script src="data.js"></script>
 <script src="limited.js"></script>
+<script src="rules.js"></script>
 <script src="app.js"></script>
 </body></html>
