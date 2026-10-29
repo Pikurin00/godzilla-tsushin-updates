@@ -1,18 +1,18 @@
 {
-  "version": "1.5.2",
-  "title": "ニュースの選別を強化",
+  "version": "1.5.3",
+  "title": "分類・図鑑・情報源タブの見直し",
   "files": [
     {
       "path": "app/app.js",
-      "sha256": "ab8f04ec0d71ae396820bd6c337c2eee91c3f810774227536ab7311d3a1347ea"
+      "sha256": "13efa6490c9b2a38424a73c15c251fd660a3a885043f886d60ffd049701a2b04"
     },
     {
       "path": "app/data.js",
-      "sha256": "41c2757b5ab35a6dd8f02ed0ad3b58b2215f22760eb4576be9a58aef0e5d85e4"
+      "sha256": "af236399fca58810fbdc2edded6136ccee794365897a7b28598b46304c888e8b"
     },
     {
       "path": "app/index.html",
-      "sha256": "1b6bc2d7cc0f53c2a48f744358d70cc6d0506dff1807d85c244e62fe1efd6f95"
+      "sha256": "a9be511b4fc720d186d69d80b86aa2c3075e6b66502d311c4b45ff3415a56278"
     },
     {
       "path": "app/limited.js",
@@ -20,11 +20,11 @@
     },
     {
       "path": "app/rules.js",
-      "sha256": "cab836165b8cf3164901c4b4ccc0d90475ae18fc642c58bfc73c280156ddcc03"
+      "sha256": "15a4b977ff0c1a4decbb6ed1bb72b00b7398471a4c68b7a41fc5c0bc0a446e25"
     },
     {
       "path": "app/style.css",
-      "sha256": "160f0b4255fbf7296e3b0695335fb6c97ee0076d109e0d13e951a9f41d1ee88a"
+      "sha256": "e43382f494999135dcf01b697619bada347fea1c79a99742ab85bd9473e98223"
     }
   ],
   "minBase": "1.4.0"
