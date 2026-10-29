@@ -1,10 +1,10 @@
 {
-  "version": "1.5.1",
-  "title": "限定図鑑の整理・ハロウィン・フェス",
+  "version": "1.5.2",
+  "title": "ニュースの選別を強化",
   "files": [
     {
       "path": "app/app.js",
-      "sha256": "14107b98697791bbab50730f4de7d61792d7f1b5aec4086771f9214343bbb888"
+      "sha256": "ab8f04ec0d71ae396820bd6c337c2eee91c3f810774227536ab7311d3a1347ea"
     },
     {
       "path": "app/data.js",
@@ -12,11 +12,15 @@
     },
     {
       "path": "app/index.html",
-      "sha256": "02be115d6fbe764408f64e7c99bd45e6e1d0e297f175f0741fde757d374aa270"
+      "sha256": "1b6bc2d7cc0f53c2a48f744358d70cc6d0506dff1807d85c244e62fe1efd6f95"
     },
     {
       "path": "app/limited.js",
       "sha256": "6db27576f4374f95d5c87f8d77cad0e3dc0a4f40d0032f387b97590ec2fdfb41"
+    },
+    {
+      "path": "app/rules.js",
+      "sha256": "cab836165b8cf3164901c4b4ccc0d90475ae18fc642c58bfc73c280156ddcc03"
     },
     {
       "path": "app/style.css",
