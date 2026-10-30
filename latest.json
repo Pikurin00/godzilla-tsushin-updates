@@ -1,10 +1,10 @@
 {
-  "version": "1.5.3",
-  "title": "分類・図鑑・情報源タブの見直し",
+  "version": "1.5.4",
+  "title": "同じニュースの複合",
   "files": [
     {
       "path": "app/app.js",
-      "sha256": "13efa6490c9b2a38424a73c15c251fd660a3a885043f886d60ffd049701a2b04"
+      "sha256": "4b968ab10b5195a9fe827af3724fc970105135214d3c4379b7c939c1784dfe70"
     },
     {
       "path": "app/data.js",
@@ -20,7 +20,7 @@
     },
     {
       "path": "app/rules.js",
-      "sha256": "15a4b977ff0c1a4decbb6ed1bb72b00b7398471a4c68b7a41fc5c0bc0a446e25"
+      "sha256": "dcce677b84715186a6548bd7dfa6316854989021ee86bf35e54c284e14e57e59"
     },
     {
       "path": "app/style.css",
