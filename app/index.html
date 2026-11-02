@@ -8,8 +8,7 @@
 <link rel="stylesheet" href="fonts/zen-kaku-gothic-new/700.css">
 <link rel="stylesheet" href="style.css">
 </head>
-<body><div id="title" class="ttlscr hide"><div class="ts-deco" id="ts_deco"></div><div class="ts-in">
- <div class="ts-season" id="ts_season"></div>
+<body><div id="title" class="ttlscr hide"><div class="ts-in">
  <h1 class="ts-h">GODZILLA <span>通信</span></h1>
  <div class="ts-sub">ゴジラの最新情報とスタンプカード</div>
  <div class="ts-stats" id="ts_stats"></div>
@@ -20,7 +19,7 @@
 </div></div>
 <div class="wrap">
 <header><h1>GODZILLA <span>通信</span></h1><div class="tag">ゴジラの最新情報とスタンプカード</div></header>
-<nav><button id="t1" class="on">ニュース</button><button id="t2">スタンプ</button><button id="t3">図鑑</button><button id="t4">あそぶ</button><button id="t5">その他</button></nav>
+<nav><button id="t1" class="on">ニュース</button><button id="t2">スタンプカード</button><button id="t3">図鑑</button><button id="t4">情報源</button><button id="t5">設定</button></nav>
 
 <section id="news">
  <div id="cd" class="cd"></div>
@@ -47,10 +46,9 @@
   <h2>ログインスタンプカード</h2>
   <div class="note">1日でも休むと、また1日目から。</div>
   <div id="ttl" class="ttl"></div>
-  <div style="margin-top:10px">連続スタンプ</div>
+  <div style="margin-top:10px">連続ログイン</div>
   <div class="streak"><span id="sn">0</span><span style="font-size:18px"> 日</span></div>
   <div class="gpb">Godzilla Point　<b id="gp">0</b> GP</div>
-  <div class="cpbar" id="cpbar"></div>
   <div class="stamps" id="stamps"></div>
   <div class="msg" id="msg"></div>
   <button class="btn" id="go">今日のスタンプを押す</button>
@@ -68,14 +66,6 @@
  <div id="zpb" class="hide"><div class="gpb">Godzilla Point　<b id="gp2">0</b> GP</div><div class="note" id="zlh"></div><div id="zlim"></div></div>
 </section>
 
-<section id="play" class="hide">
- <div class="chips" id="pt"><button id="p_q" class="on">Godzilla Quiz</button><button id="p_g">Godzilla Game</button></div>
- <div id="pq"></div>
- <div id="pg" class="hide"></div>
-</section>
-
-<section id="more" class="hide">
- <div class="chips" id="mt"><button id="m_set" class="on">設定</button><button id="m_src">情報源</button></div>
 <section id="src" class="hide">
  <div id="sbar"></div>
  <div id="slist"></div>
@@ -94,7 +84,6 @@
 <section id="set" class="hide">
  <h2 class="sh">表示</h2>
  <div class="row"><label><input type="checkbox" id="s_title"> 起動したときにタイトル画面を表示する</label></div>
- <div class="row"><label for="s_season">タイトル画面の飾り</label><select id="s_season"></select></div>
  <div class="row"><label for="s_theme">テーマ</label><select id="s_theme"><option value="auto">自動（Windowsの設定に合わせる）</option><option value="light">ライト</option><option value="dark">ダーク</option></select></div>
  <h2 class="sh">ニュース</h2>
  <div class="row"><label for="s_max">保存する件数</label><select id="s_max"><option value="50">50件</option><option value="100">100件</option><option value="200">200件</option><option value="300">300件</option><option value="500">500件</option><option value="1000">1000件</option></select></div>
@@ -120,7 +109,6 @@
  <h2 class="sh">このアプリについて</h2>
  <div class="note" id="about"></div>
 </section>
-</section>
 <div id="ver" class="note ver"></div>
 </div>
 <div id="md" class="md hide"><div class="sheet" id="sheet"></div></div>
@@ -128,6 +116,5 @@
 <script src="data.js"></script>
 <script src="limited.js"></script>
 <script src="rules.js"></script>
-<script src="play.js"></script>
 <script src="app.js"></script>
 </body></html>
