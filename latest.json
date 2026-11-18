@@ -1,10 +1,38 @@
 {
-  "version": "1.4.1",
-  "title": "テスト更新",
+  "version": "1.6.0",
+  "title": "クイズ・双六・チェックポイント・季節のタイトル画面",
   "files": [
     {
+      "path": "app/app.js",
+      "sha256": "9cf97530b405e1cf82b67db1272dd1de843800576082747ce3ca72a0899e7cab"
+    },
+    {
       "path": "app/data.js",
-      "sha256": "ae19e00044a105ef670322ab7a7d020c4b0793a73fff0fb559a5a259f996d57e"
+      "sha256": "7a0781c0f41e211fc299e8058b78ba0d7d4be386ccc23c16f7cf7d4a964064b9"
+    },
+    {
+      "path": "app/index.html",
+      "sha256": "2914fd0fa743038388c94a844724f7f3a758c68729e784cdae41fd705b55abba"
+    },
+    {
+      "path": "app/limited.js",
+      "sha256": "09e3fc6a3653152adf9b4d019f85fdf872e87773e65537363d0625d20a24d7c5"
+    },
+    {
+      "path": "app/play.js",
+      "sha256": "8ea52da94fcb3d4b4fb310bbbce32769731749005444fa62d908823239ccc013"
+    },
+    {
+      "path": "app/rules.js",
+      "sha256": "dcf51a97360c5d31a678d8ec8f7c99e403072cad2384a939acf8edc618bf7605"
+    },
+    {
+      "path": "app/seed.js",
+      "sha256": "7e05628d61c01b98b25b4d206749453f100eb338dc113c07b5c78df08cd8b4ba"
+    },
+    {
+      "path": "app/style.css",
+      "sha256": "feb9164192563dccc00a886552ab0f9659d69dd015ccb622f1f60586ad17c1c3"
     }
   ],
   "minBase": "1.4.0"
