@@ -1,0 +1,11 @@
+{
+  "version": "1.4.1",
+  "title": "テスト更新",
+  "files": [
+    {
+      "path": "app/data.js",
+      "sha256": "ae19e00044a105ef670322ab7a7d020c4b0793a73fff0fb559a5a259f996d57e"
+    }
+  ],
+  "minBase": "1.4.0"
+}
