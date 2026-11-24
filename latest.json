@@ -1,14 +1,14 @@
 {
-  "version": "1.6.0",
-  "title": "クイズ・双六・チェックポイント・季節のタイトル画面",
+  "version": "1.7.0",
+  "title": "クリスマス・シン・ゴジラ10周年の限定図鑑／図鑑の詳細表示",
   "files": [
     {
       "path": "app/app.js",
-      "sha256": "9cf97530b405e1cf82b67db1272dd1de843800576082747ce3ca72a0899e7cab"
+      "sha256": "f85ff4abb11535c740a60270d7e9522458c223b0566cf76779875ae479b2ecaf"
     },
     {
       "path": "app/data.js",
-      "sha256": "7a0781c0f41e211fc299e8058b78ba0d7d4be386ccc23c16f7cf7d4a964064b9"
+      "sha256": "f8ec8022da3d45c3b9b7d22a5b99c7798d72b33416f35c1c31d4bb31534573be"
     },
     {
       "path": "app/index.html",
@@ -16,23 +16,23 @@
     },
     {
       "path": "app/limited.js",
-      "sha256": "09e3fc6a3653152adf9b4d019f85fdf872e87773e65537363d0625d20a24d7c5"
+      "sha256": "b019621f4f979772bc497d6495c83a19a8147d0e5cbb0cc6fad16441e4786641"
     },
     {
       "path": "app/play.js",
-      "sha256": "8ea52da94fcb3d4b4fb310bbbce32769731749005444fa62d908823239ccc013"
+      "sha256": "43576f5f5d827f5eeaad26aec03633c971ff63a7fb2010b30f40bd60f64e7c8b"
     },
     {
       "path": "app/rules.js",
-      "sha256": "dcf51a97360c5d31a678d8ec8f7c99e403072cad2384a939acf8edc618bf7605"
+      "sha256": "7057f570017428d7a31f382b28eadb08bcad450a8bd30c3d187b312d3443f4f7"
     },
     {
       "path": "app/seed.js",
-      "sha256": "7e05628d61c01b98b25b4d206749453f100eb338dc113c07b5c78df08cd8b4ba"
+      "sha256": "3f005ffa88f2de13b2e222fbb6c031c9998b9d91eee973bd55031a001d328fc4"
     },
     {
       "path": "app/style.css",
-      "sha256": "feb9164192563dccc00a886552ab0f9659d69dd015ccb622f1f60586ad17c1c3"
+      "sha256": "cbb6f7ebbc0e609c18c981a048fbab3f2fc9fcdc932832e5ef30aa19e7e384ba"
     }
   ],
   "minBase": "1.4.0"
